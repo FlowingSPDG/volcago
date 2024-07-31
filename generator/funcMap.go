@@ -288,6 +288,18 @@ func (g *structGenerator) getFuncMap() template.FuncMap {
 			)
 			return raw
 		},
+		"CountFunc": func() string {
+			return fmt.Sprintf(
+				"Count(ctx context.Context, param *%sSearchParam, q *firestore.Query) (int, error)",
+				g.param.StructName,
+			)
+		},
+		"CountByParamFunc": func() string {
+			return fmt.Sprintf(
+				"CountByParam(ctx context.Context, param *%sSearchParam) (int, error)",
+				g.param.StructName,
+			)
+		},
 		"LookUpFieldByName": func(fieldInfos []*FieldInfo, name string) *FieldInfo {
 			for _, fi := range fieldInfos {
 				if fi.Field == name {

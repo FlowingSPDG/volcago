@@ -49,6 +49,9 @@ type HistoryRepository interface {
 	SearchWithTx(tx *firestore.Transaction, param *HistorySearchParam, q *firestore.Query) ([]*History, error)
 	SearchByParam(ctx context.Context, param *HistorySearchParam) ([]*History, *PagingResult, error)
 	SearchByParamWithTx(tx *firestore.Transaction, param *HistorySearchParam) ([]*History, *PagingResult, error)
+	// Count
+	Count(ctx context.Context, param *HistorySearchParam, q *firestore.Query) (int, error)
+	CountByParam(ctx context.Context, param *HistorySearchParam) (int, error)
 	// misc
 	GetCollection() *firestore.CollectionRef
 	GetCollectionName() string
@@ -697,6 +700,16 @@ func (repo *historyRepository) DeleteMultiByIDsWithTx(ctx context.Context, tx *f
 	}
 
 	return nil
+}
+
+// Count - Count documents
+func (repo *historyRepository) Search(ctx context.Context, param *HistorySearchParam, q *firestore.Query) ([]*History, error) {
+	return repo.search(ctx, param, q)
+}
+
+// CountByParam - Count documents by search param
+func (repo *historyRepository) SearchByParam(ctx context.Context, param *HistorySearchParam) ([]*History, *PagingResult, error) {
+	return repo.searchByParam(ctx, param)
 }
 
 func (repo *historyRepository) get(v interface{}, doc *firestore.DocumentRef, _ ...GetOption) (*History, error) {
