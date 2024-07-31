@@ -64,6 +64,9 @@ type {{ .RepositoryInterfaceName }} interface {
 	{{ SearchWithTxFunc }}
 	{{ SearchByParamFunc }}
 	{{ SearchByParamWithTxFunc }}
+	// Count
+	{{ CountFunc }}
+	{{ CountByParamFunc }}
 	// misc
 	GetCollection() *firestore.CollectionRef
 	GetCollectionName() string
@@ -966,6 +969,16 @@ func (repo *{{ .RepositoryStructName }}) {{ DeleteMultiByWithTxFunc }} {
 	}
 
 	return nil
+}
+
+// Count - Count documents
+func (repo *{{ .RepositoryStructName }}) {{ SearchFunc }} {
+	return repo.search(ctx, param, q)
+}
+
+// CountByParam - Count documents by search param
+func (repo *{{ .RepositoryStructName }}) {{ SearchByParamFunc }} {
+	return repo.searchByParam(ctx, param)
 }
 
 func (repo *{{ .RepositoryStructName }}) get(v interface{}, doc *firestore.DocumentRef, {{ if .MetaFieldsEnabled }}opts{{ else }}_{{ end }} ...GetOption) (*{{ .StructNameRef }}, error) {
